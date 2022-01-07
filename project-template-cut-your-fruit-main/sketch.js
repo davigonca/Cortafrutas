@@ -4,7 +4,7 @@ var END=0;
 var gameState=1;
 
 var knife,fruit ,monster,fruitGroup,monsterGroup, score,r,randomFruit, position;
-var knifeImage , fruit1, fruit2 ,fruit3,fruit4, monsterImage, gameOverImage;
+var knifeImage , fruit1, fruit2 ,fruit3,fruit4, monsterImage, gameOverImage,gameOversound;
 
 function preload(){
   
@@ -15,7 +15,7 @@ function preload(){
   fruit3 = loadImage("fruit3.png");
   fruit4 = loadImage("fruit4.png");
   gameOverImage = loadImage("gameover.png")
-
+  gameOversound = loadSound("gameover.mp3");
   
 }
 
@@ -55,11 +55,10 @@ function draw() {
     // Aumenta a pontuação se a espada tocar na fruta
     if(fruitGroup.isTouching(knife)){
       fruitGroup.destroyEach();
+      score+1
     }
-    else
-    {
-      // Vá para o estado final se a espada tocar o inimigo
-      if(monsterGroup.isTouching(knife)){
+    else if(monsterGroup.isTouching(knife)){
+        gameOversound.play();
         gameState=END;
         
         //adicione o som do gameover (fim de jogo) aqui
@@ -75,7 +74,7 @@ function draw() {
         knife.x=300;
         knife.y=300;
       }
-    }
+    
   }
   
   drawSprites();
@@ -91,7 +90,7 @@ function Monster(){
     monster.addAnimation("moving", monsterImage);
     monster.y=Math.round(random(100,550));
     //atualize o código abaixo para aumentar a velocidade do monsterGroup (grupo de monstros) em 10
-    monster.velocityX = -8;
+    monster.velocityX = -10;
     monster.setLifetime=50;
     
     monsterGroup.add(monster);
